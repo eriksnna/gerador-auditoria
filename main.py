@@ -4,7 +4,6 @@ from cliente import coletar_cliente
 from servidor import auditar_servidor
 from sql import auditar_sql
 
-
 def pergunta_status_final():
 
     opcoes = {
@@ -29,7 +28,6 @@ def pergunta_status_final():
 
         print("Escolha apenas 1, 2 ou 3.")
 
-
 def coletar_observacoes():
 
     print("\n=== OBSERVAÇÕES ===")
@@ -53,7 +51,6 @@ def coletar_observacoes():
 
     return "\n".join(linhas)
 
-
 def gerar_bloco_servidor(servidor):
 
     return f"""
@@ -68,21 +65,20 @@ def gerar_bloco_servidor(servidor):
 ---
 """
 
-
 def gerar_bloco_sql(sql):
 
     return f"""
 ### {sql.nome}
 
+- {sql.status_global_sql} **STATUS GLOBAL:** {sql.status_global_sql_texto}
 - {sql.agente} **AGENTE SQL:** {sql.agente_texto}
 - **DATA/HORA DO ÚLTIMO PONTO:** {sql.data_ultimo_ponto}
-- {sql.simulacao} **SIMULAÇÃO DE RESTAURO SQL:** {sql.simulacao_texto}
+- {sql.simulacao_restauro_sql} **SIMULAÇÃO DE RESTAURO SQL:** {sql.simulacao_restauro_sql_texto}
 - {sql.logs} **VERIFICAÇÃO DE LOGS:** {sql.logs_texto}
 - **TAMANHO DO BACKUP INCREMENTAL EM NUVEM:** {sql.tamanho_backup}
 
 ---
 """
-
 
 def gerar_bloco_status_final(status):
 
@@ -96,11 +92,10 @@ def gerar_bloco_status_final(status):
 - {"❌" if codigo == "3" else "⬜"} **ERRO IDENTIFICADO**
 """
 
-
 def gerar_relatorio(
     cliente,
     servidores,
-    sql,
+    sqls,
     status_final,
     observacoes
 ):
@@ -128,12 +123,13 @@ Estamos enviando o relatório de Auditoria Semanal referente ao cliente **{clien
 
     relatorio += "\n## 🗄️ AUDITORIA SQL SERVER\n"
 
-    if sql is not None:
-        relatorio += gerar_bloco_sql(sql)
+    if sqls:
+        for sql in sqls:
+            relatorio += gerar_bloco_sql(sql)
     else:
         relatorio += """
 Cliente não possui ambiente SQL Server.
-
+ 
 ---
 """
 
@@ -151,13 +147,8 @@ Cliente não possui ambiente SQL Server.
 
 Atenciosamente,
 
-**Erik Senna Medeiros**  
-Estagiário  
-erik.medeiros@theotech.net.br
 """
-
     return relatorio
-
 
 def salvar_relatorio(relatorio, identificacao):
 
@@ -175,7 +166,6 @@ def salvar_relatorio(relatorio, identificacao):
         arquivo.write(relatorio)
 
     return nome_arquivo
-
 
 def main():
 

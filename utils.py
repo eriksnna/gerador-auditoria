@@ -12,8 +12,6 @@ def perguntar(pergunta, texto_sim, texto_nao):
 
         print("Insira apenas y ou n.")
 
-
-
 def pergunta_quantidade(pergunta):
     while True:
         try:
@@ -26,3 +24,19 @@ def pergunta_quantidade(pergunta):
 
         except ValueError:
             print("Digite um número inteiro válido.")
+
+def questionario_auditoria(perguntas):
+    respostas = {}
+
+    for chave, pergunta_txt, texto_sim, texto_nao in perguntas:
+        resposta, emoji, texto = perguntar(
+            pergunta_txt,
+            texto_sim,
+            texto_nao
+        )
+
+        respostas[chave] = emoji
+        respostas[f"{chave}_texto"] = texto
+        respostas[f"{chave}_bool"] = resposta
+
+    return respostas

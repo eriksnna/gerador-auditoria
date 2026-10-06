@@ -1,16 +1,17 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from utils import perguntar
-
+from utils import questionario_auditoria
 
 @dataclass
 class SQL:
     nome: str
+    status_global_sql: str
+    status_global_sql_texto: str
     agente: str
     agente_texto: str    
-    simulacao: str
-    simulacao_texto: str
+    simulacao_restauro_sql: str
+    simulacao_restauro_sql_texto: str
     logs: str
     logs_texto: str
     data_ultimo_ponto: str
@@ -18,16 +19,22 @@ class SQL:
 
 PERGUNTAS_SQL = [
     (
+        "status_global_sql",
+        "O banco SQL consta como protegido no painel?",
+        "O banco SQL consta como 'Protegido' no painel.",
+        "O banco SQL NÃO consta como 'Protegido' no painel.",
+    ),
+    (
         "agente",
-        "Os bancos SQL estão funcionando normalmente?",
+        "O banco SQL está funcionando normalmente?",
         "O SQL Server VSS Writer está funcionando corretamente.",
         "Foi identificada uma possível falha no SQL Server VSS Writer.",
     ),
     (
-        "simulacao",
-        "A simulação de restauro SQL está OK?",
-        "Todos os bancos aparecem disponíveis.",
-        "Nem todos os bancos apareceram disponíveis.",
+        "simulacao_restauro_sql",
+        "A simulação ocorreu com sucesso e a estrutura foi listada?",
+        "A estrutura de diretórios foi listada com sucesso.",
+        "A simulação de restauro não ocorreu conforme esperado.",
     ),
     (
         "logs",
@@ -36,7 +43,6 @@ PERGUNTAS_SQL = [
         "Foram encontrados erros ou truncamentos.",
     ),
 ]
-
 
 def auditar_sql():
     print(f"\n{'=' * 50}")
@@ -47,19 +53,13 @@ def auditar_sql():
 
     nome = input("Nome do servidor (SQL): ").strip()
 
-    for chave, pergunta_txt, texto_sim, texto_nao in PERGUNTAS_SQL:
-        emoji, texto = perguntar(
-            pergunta_txt,
-            texto_sim,
-            texto_nao
+    respostas = questionario_auditoria(
+        PERGUNTAS_SQL
         )
-
-        respostas[chave] = emoji
-        respostas[f"{chave}_texto"] = texto
 
     while True:
         data_ultimo_ponto = input(
-            "Data/Hora do Último Ponto do SQL: "
+            "Data/Hora do Último Ponto do SQL (dd/mm/aaaa às hh:mm): "
         ).strip()
 
         try:
@@ -73,15 +73,17 @@ def auditar_sql():
             print("Formato inválido.")
 
     tamanho_backup = input(
-        "Tamanho do Backup em Nuvem (SQL): "
+        "Tamanho do Backup Incremental em Nuvem (SQL): "
     ).strip()
 
     return SQL(
         nome=nome,
+        status_global_sql=respostas["status_global_sql"],
+        status_global_sql_texto=respostas["status_global_sql_texto"],
         agente=respostas["agente"],
         agente_texto=respostas["agente_texto"],
-        simulacao=respostas["simulacao"],
-        simulacao_texto=respostas["simulacao_texto"],
+        simulacao_restauro_sql=respostas["simulacao_restauro_sql"],
+        simulacao_restauro_sql_texto=respostas["simulacao_restauro_sql_texto"],
         logs=respostas["logs"],
         logs_texto=respostas["logs_texto"],
         data_ultimo_ponto=data_ultimo_ponto,

@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from utils import perguntar
-
+from utils import questionario_auditoria
 
 @dataclass
 class Servidor:
@@ -37,7 +36,6 @@ PERGUNTAS_SERVIDOR = [
     ),
 ]
 
-
 def auditar_servidor():
     print(f"\n{'=' * 50}")
     print("AUDITORIA DO SERVIDOR")
@@ -54,15 +52,9 @@ def auditar_servidor():
 
     respostas = {}
 
-    for chave, pergunta_txt, texto_sim, texto_nao in PERGUNTAS_SERVIDOR:
-        emoji, texto = perguntar(
-            pergunta_txt,
-            texto_sim,
-            texto_nao
-        )
-
-        respostas[chave] = emoji
-        respostas[f"{chave}_texto"] = texto
+    respostas = questionario_auditoria(
+    PERGUNTAS_SERVIDOR
+    )
 
     while True:
         data_ultimo_ponto = input(
@@ -80,7 +72,7 @@ def auditar_servidor():
             print("Formato inválido.")
 
     tamanho_backup = input(
-        "Tamanho do Backup em Nuvem: "
+        "Tamanho do Backup Incremental em Nuvem: "
     ).strip().upper()
 
     return Servidor(
