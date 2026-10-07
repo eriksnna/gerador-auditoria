@@ -1,3 +1,3 @@
-## 1. Rode o main.py
+## gerador-auditoria
 
-### Insira as informações manualmente.
+projeto direcionado para organização de auditorias, escrito em python.
