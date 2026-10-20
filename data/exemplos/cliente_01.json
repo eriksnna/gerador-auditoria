@@ -1,0 +1,22 @@
+{
+    "nome": "cliente 01",
+
+    "possui_sql": true,
+
+    "servidores": [
+        "server1",
+        "server2",
+        "server3"
+    ],
+
+    "instancias_sql": [
+        "instancia01",
+        "instancia02"
+    ], 
+
+    "bancos_sql": [
+        "sql01",
+        "sql02",
+        "sql03"
+    ]
+}

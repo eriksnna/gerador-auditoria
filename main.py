@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from cliente import coletar_cliente
 from servidor import auditar_servidor
@@ -129,7 +130,7 @@ Estamos enviando o relatório de Auditoria Semanal referente ao cliente **{clien
     else:
         relatorio += """
 Cliente não possui ambiente SQL Server.
- 
+
 ---
 """
 
@@ -150,9 +151,21 @@ Atenciosamente,
 """
     return relatorio
 
-def salvar_relatorio(relatorio, identificacao):
+def salvar_relatorio(
+    relatorio,
+    identificacao
+):
 
-    nome_arquivo = (
+    pasta = Path(
+        "data/auditorias"
+    )
+
+    pasta.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    nome_arquivo = pasta / (
         f"{identificacao}_auditoria_semanal_"
         f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
     )
@@ -163,7 +176,9 @@ def salvar_relatorio(relatorio, identificacao):
         encoding="utf-8"
     ) as arquivo:
 
-        arquivo.write(relatorio)
+        arquivo.write(
+            relatorio
+        )
 
     return nome_arquivo
 
@@ -173,46 +188,26 @@ def main():
 
     cliente = coletar_cliente()
 
-    if (
-        cliente.quantidade_servidores == 0
-        and
-        cliente.quantidade_servidores_sql == 0
-    ):
-
-        print(
-            "\nNenhum servidor informado. Encerrando auditoria."
-        )
-
-        return
-
     print("\n=== SERVIDORES ===")
 
     servidores = []
 
-    for i in range(
-        cliente.quantidade_servidores
-    ):
-
-        print(
-            f"\nServidor {i + 1} de {cliente.quantidade_servidores}"
-        )
+    for servidor_nome in cliente.servidores:
 
         servidores.append(
-            auditar_servidor()
+            auditar_servidor(
+                servidor_nome
+            )
         )
 
     sqls = []
 
-    for i in range(
-        cliente.quantidade_servidores_sql
-        ):
-
-        print(
-            f"\nServidor {i + 1} de {cliente.quantidade_servidores_sql}"
-        )
+    for sql_nome in cliente.sqls:
 
         sqls.append(
-            auditar_sql()
+            auditar_sql(
+                sql_nome
+            )
         )
 
     status_final = pergunta_status_final()

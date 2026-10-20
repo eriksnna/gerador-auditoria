@@ -13,6 +13,8 @@ venv/
 
 # security
 
-data/clientes
+data/clientes/*
+data/auditorias/*
 
-data/auditorias
+!data/clientes/.gitkeep
+!data/auditorias/.gitkeep

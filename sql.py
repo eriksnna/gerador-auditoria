@@ -44,14 +44,14 @@ PERGUNTAS_SQL = [
     ),
 ]
 
-def auditar_sql():
+def auditar_sql(nome):
     print(f"\n{'=' * 50}")
     print("AUDITORIA SQL SERVER")
     print(f"{'=' * 50}\n")
 
-    respostas = {}
+    print(f"Banco SQL: {nome}")
 
-    nome = input("Nome do servidor (SQL): ").strip()
+    respostas = {}
 
     respostas = questionario_auditoria(
         PERGUNTAS_SQL

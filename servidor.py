@@ -36,19 +36,12 @@ PERGUNTAS_SERVIDOR = [
     ),
 ]
 
-def auditar_servidor():
+def auditar_servidor(nome):
     print(f"\n{'=' * 50}")
     print("AUDITORIA DO SERVIDOR")
     print(f"{'=' * 50}\n")
 
-    while True:
-        nome = input(
-            "Nome do servidor: "
-            ).strip()
-        if nome:
-            break
-
-        print("Informe um nome válido.")
+    print(f"Servidor: {nome}")
 
     respostas = {}
 

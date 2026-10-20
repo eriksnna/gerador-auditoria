@@ -1,38 +1,71 @@
 from dataclasses import dataclass
-from utils import perguntar, pergunta_quantidade
+from pathlib import Path
+import json
 
 @dataclass
 class Cliente:
     identificacao: str
-    quantidade_servidores: int
-    possui_sql: bool
-    quantidade_servidores_sql: int
+    servidores: list
+    sqls: list
 
 def coletar_cliente():
-    identificacao = input(
-        "Cliente a ser auditado: "
-    ).strip()
 
-    quantidade_servidores_sql = 0
-
-    quantidade_servidores = pergunta_quantidade(
-        "Quantidade de servidores: "
+    arquivos = sorted(
+        Path("data/clientes").glob("*.json")
     )
 
-    possui_sql, _, _ = perguntar(
-        "O cliente possui SQL?",
-        "Cliente possui ambiente SQL Server.",
-        "Cliente não possui ambiente SQL Server."
-    )
+    if not arquivos:
+        raise FileNotFoundError(
+            "Nenhum cliente encontrado."
+        )
 
-    if possui_sql:
-        quantidade_servidores_sql = pergunta_quantidade(
-            "Quantidade de servidores (SQL): "    
-    )
+    print("\n=== CLIENTES ===\n")
 
-    return Cliente(
-        identificacao=identificacao,
-        possui_sql=possui_sql,
-        quantidade_servidores=quantidade_servidores,
-        quantidade_servidores_sql=quantidade_servidores_sql,
-    )
+    for i, arquivo in enumerate(
+        arquivos,
+        start=1
+    ):
+        print(
+            f"{i} - {arquivo.stem}"
+        )
+
+    while True:
+
+        try:
+
+            escolha = int(
+                input(
+                    "\nSelecione o cliente: "
+                )
+            )
+
+            if not (
+                1 <= escolha <= len(arquivos)
+            ):
+                print("Opção inválida.")
+                continue
+
+            arquivo = arquivos[
+                escolha - 1
+            ]
+
+            with open(
+                arquivo,
+                "r",
+                encoding="utf-8"
+            ) as f:
+
+                dados = json.load(f)
+
+            return Cliente(
+                identificacao=dados["nome"],
+                servidores=dados.get("servidores", []),
+                sqls=dados.get("sql", [])
+            )
+
+        except (
+            ValueError,
+            IndexError
+        ):
+
+            print("Opção inválida.")
