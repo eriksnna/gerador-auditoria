@@ -56,7 +56,7 @@ def auditar_sql(instancia):
 
     print(f"Instância SQL: {nome}")
 
-    print("\nBancos cadastrados:\n")
+    print("\nBancos cadastrados:")
 
     for banco in bancos:
         print(f"- {banco}")
