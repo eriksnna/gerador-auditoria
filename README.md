@@ -1,4 +1,4 @@
-## Gerador Auditoria
+## Gerador Auditoria 📃📊
 
 ### Sobre
 
