@@ -68,8 +68,19 @@ def gerar_bloco_servidor(servidor):
 
 def gerar_bloco_sql(sql):
 
+    quantidade_bancos = len(sql.bancos)
+
+    bancos = "\n".join(
+        f"- {banco}"
+        for banco in sorted(sql.bancos)
+    )
+
     return f"""
 ### {sql.nome}
+
+**Bancos Monitorados:** {quantidade_bancos}
+
+{sql.bancos}
 
 - {sql.status_global_sql} **STATUS GLOBAL:** {sql.status_global_sql_texto}
 - {sql.agente} **AGENTE SQL:** {sql.agente_texto}
@@ -202,11 +213,11 @@ def main():
 
     sqls = []
 
-    for sql_nome in cliente.sqls:
+    for instancia in cliente.instancias_sql:
 
         sqls.append(
             auditar_sql(
-                sql_nome
+                instancia
             )
         )
 

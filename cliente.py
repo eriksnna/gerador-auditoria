@@ -6,7 +6,7 @@ import json
 class Cliente:
     identificacao: str
     servidores: list
-    sqls: list
+    instancias_sql: list
 
 def coletar_cliente():
 
@@ -60,8 +60,11 @@ def coletar_cliente():
             return Cliente(
                 identificacao=dados["nome"],
                 servidores=dados.get("servidores", []),
-                sqls=dados.get("sql", [])
+                instancias_sql=dados.get(
+                    "instancias_sql",
+                    []
             )
+        )
 
         except (
             ValueError,

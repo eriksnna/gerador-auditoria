@@ -1,8 +1,6 @@
 {
     "nome": "cliente 01",
 
-    "possui_sql": true,
-
     "servidores": [
         "server1",
         "server2",
@@ -10,13 +8,21 @@
     ],
 
     "instancias_sql": [
-        "instancia01",
-        "instancia02"
-    ], 
-
-    "bancos_sql": [
-        "sql01",
-        "sql02",
-        "sql03"
+        {
+            "nome": "instancia01",
+            "bancos": [
+                "sql01",
+                "sql02",
+                "sql03"
+            ]
+        },
+        {
+            "nome": "instancia02",
+            "bancos": [
+                "sql04",
+                "sql05",
+                "sql06"
+            ]
+        }
     ]
 }

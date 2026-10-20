@@ -6,6 +6,7 @@ from utils import questionario_auditoria
 @dataclass
 class SQL:
     nome: str
+    bancos: list
     status_global_sql: str
     status_global_sql_texto: str
     agente: str
@@ -44,12 +45,21 @@ PERGUNTAS_SQL = [
     ),
 ]
 
-def auditar_sql(nome):
+def auditar_sql(instancia):
+
+    nome = instancia["nome"]
+    bancos = instancia["bancos"]
+
     print(f"\n{'=' * 50}")
     print("AUDITORIA SQL SERVER")
     print(f"{'=' * 50}\n")
 
-    print(f"Banco SQL: {nome}")
+    print(f"Instância SQL: {nome}")
+
+    print("\nBancos cadastrados:\n")
+
+    for banco in bancos:
+        print(f"- {banco}")
 
     respostas = {}
 
@@ -78,6 +88,7 @@ def auditar_sql(nome):
 
     return SQL(
         nome=nome,
+        bancos=bancos,
         status_global_sql=respostas["status_global_sql"],
         status_global_sql_texto=respostas["status_global_sql_texto"],
         agente=respostas["agente"],
