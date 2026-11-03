@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from utils import questionario_auditoria
+from utils import perguntar, questionario_auditoria
 
 @dataclass
 class Servidor:
     nome: str
+    online: bool
     status_global: str
     status_global_texto: str
     simulacao_restauro: str
@@ -15,7 +16,7 @@ class Servidor:
     data_ultimo_ponto: str
     tamanho_backup: str
 
-PERGUNTAS_SERVIDOR = [
+PERGUNTAS_SERVIDOR = [   
     (
         "status_global",
         "O servidor consta como protegido no painel?",
@@ -45,8 +46,35 @@ def auditar_servidor(nome):
 
     respostas = {}
 
+    online, emoji_online, texto_online = perguntar(
+        "O servidor se encontra online?",
+        "O servidor se encontra Online.",
+        "O servidor NÃO se encontra Online.",
+    )
+
+    # Servidor offline: encerra as perguntas aqui.
+
+    if not online:
+        print("\nServidor offline - demais verificações ignoradas.")
+        nao_avaliado = "⚪"
+        texto_na = "Não avaliado (servidor offline)."
+        return Servidor(
+            nome=nome,
+            online=False,
+            status=emoji_online,
+            status_texto=texto_online,
+            status_global=nao_avaliado,
+            status_global_texto=texto_na,
+            simulacao_restauro=nao_avaliado,
+            simulacao_restauro_texto=texto_na,
+            consistencia=nao_avaliado,
+            consistencia_texto=texto_na,
+            data_ultimo_ponto="Não avaliado",
+            tamanho_backup="Não avaliado",
+        )
+
     respostas = questionario_auditoria(
-    PERGUNTAS_SERVIDOR
+        PERGUNTAS_SERVIDOR
     )
 
     while True:
@@ -70,6 +98,7 @@ def auditar_servidor(nome):
 
     return Servidor(
         nome=nome,
+        online=True,
         status_global=respostas["status_global"],
         status_global_texto=respostas["status_global_texto"],
         simulacao_restauro=respostas["simulacao_restauro"],

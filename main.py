@@ -10,7 +10,8 @@ def pergunta_status_final():
     opcoes = {
         "1": "SUCESSO TOTAL",
         "2": "FALHA SILENCIOSA DETECTADA",
-        "3": "ERRO IDENTIFICADO"
+        "3": "ALERTA DETECTADO",
+        "4": "ERRO IDENTIFICADO"
     }
 
     print("\n=== STATUS FINAL DA AUDITORIA ===\n")
@@ -21,13 +22,13 @@ def pergunta_status_final():
     while True:
 
         escolha = input(
-            "\nEscolha o status final (1/2/3): "
+            "\nEscolha o status final (1/2/3/4): "
         ).strip()
 
         if escolha in opcoes:
             return escolha, opcoes[escolha]
 
-        print("Escolha apenas 1, 2 ou 3.")
+        print("Escolha apenas 1, 2, 3 ou 4.")
 
 def coletar_observacoes():
 
@@ -54,9 +55,20 @@ def coletar_observacoes():
 
 def gerar_bloco_servidor(servidor):
 
+    if not servidor.online:
+        return f"""
+### {servidor.nome}
+
+- {servidor.status} **STATUS DO SERVIDOR:** {servidor.status_texto}
+- ⚪ Demais verificações não realizadas.
+
+---
+"""
+
     return f"""
 ### {servidor.nome}
 
+- {servidor.status} **STATUS DO SERVIDOR:** {servidor.status_texto}
 - {servidor.status_global} **STATUS GLOBAL:** {servidor.status_global_texto}
 - **DATA/HORA DO ÚLTIMO PONTO:** {servidor.data_ultimo_ponto}
 - {servidor.simulacao_restauro} **SIMULAÇÃO DE RESTAURO:** {servidor.simulacao_restauro_texto}
@@ -80,7 +92,7 @@ def gerar_bloco_sql(sql):
 
 **Bancos Monitorados:** {quantidade_bancos}
 
-{sql.bancos}
+{bancos}
 
 - {sql.status_global_sql} **STATUS GLOBAL:** {sql.status_global_sql_texto}
 - {sql.agente} **AGENTE SQL:** {sql.agente_texto}
@@ -101,7 +113,8 @@ def gerar_bloco_status_final(status):
 
 - {"✅" if codigo == "1" else "⬜"} **SUCESSO TOTAL**
 - {"❗" if codigo == "2" else "⬜"} **FALHA SILENCIOSA DETECTADA**
-- {"❌" if codigo == "3" else "⬜"} **ERRO IDENTIFICADO**
+- {"🟡" if codigo == "3" else "⬜"} **ALERTA DETECTADO**
+- {"❌" if codigo == "4" else "⬜"} **ERRO IDENTIFICADO**
 """
 
 def gerar_relatorio(
