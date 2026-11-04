@@ -7,6 +7,8 @@ from utils import perguntar, questionario_auditoria
 class Servidor:
     nome: str
     online: bool
+    status: str
+    status_texto: str
     status_global: str
     status_global_texto: str
     simulacao_restauro: str
@@ -43,8 +45,6 @@ def auditar_servidor(nome):
     print(f"{'=' * 50}\n")
 
     print(f"Servidor: {nome}")
-
-    respostas = {}
 
     online, emoji_online, texto_online = perguntar(
         "O servidor se encontra online?",
@@ -99,6 +99,8 @@ def auditar_servidor(nome):
     return Servidor(
         nome=nome,
         online=True,
+        status=emoji_online,
+        status_texto=texto_online,
         status_global=respostas["status_global"],
         status_global_texto=respostas["status_global_texto"],
         simulacao_restauro=respostas["simulacao_restauro"],
