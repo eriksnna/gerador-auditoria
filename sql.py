@@ -21,13 +21,13 @@ class SQL:
 PERGUNTAS_SQL = [
     (
         "status_global_sql",
-        "O banco SQL consta como protegido no painel?",
-        "O banco SQL consta como 'Protegido' no painel.",
-        "O banco SQL NÃO consta como 'Protegido' no painel.",
+        "A instância SQL consta como protegida no painel?",
+        "A instância consta como 'Protegida' no painel.",
+        "A instância NÃO consta como 'Protegida' no painel.",
     ),
     (
         "agente",
-        "O banco SQL está funcionando normalmente?",
+        "A instância SQL está funcionando normalmente?",
         "O SQL Server VSS Writer está funcionando corretamente.",
         "Foi identificada uma possível falha no SQL Server VSS Writer.",
     ),
@@ -39,7 +39,7 @@ PERGUNTAS_SQL = [
     ),
     (
         "logs",
-        "A atividade do banco está consistente?",
+        "A atividade da instância está consistente?",
         "Não há erros ou truncamentos.",
         "Foram encontrados erros ou truncamentos.",
     ),
